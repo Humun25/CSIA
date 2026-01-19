@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Live Game - Viewer</title>
+   <link rel="stylesheet" href="draft1.css">
+   <style>
+       /* Additional viewer-specific styles */
+       .viewer-header {
+           text-align: center;
+           margin-bottom: 30px;
+       }
+      
+       .live-indicator {
+           display: inline-block;
+           background: #00aa00;
+           color: white;
+           padding: 5px 15px;
+           font-weight: bold;
+           font-size: 14px;
+           margin-bottom: 10px;
+           animation: pulse 2s infinite;
+       }
+      
+       .live-indicator.disconnected {
+           background: #aa0000;
+           animation: none;
+       }
+      
+       .live-indicator.no-game {
+           background: #808080;
+           animation: none;
+       }
+      
+       @keyframes pulse {
+           0%, 100% { opacity: 1; }
+           50% { opacity: 0.7; }
+       }
+      
+       .score-display {
+           font-size: 1.2em;
+       }
+      
+       .score {
+           font-size: 80px;
+       }
+      
+       .set-info {
+           text-align: center;
+           margin: 20px 0;
+           padding: 15px;
+           background: #f5f5f5;
+           border: 1px solid #000000;
+       }
+      
+       .set-info h3 {
+           margin-bottom: 10px;
+       }
+      
+       .sets-won {
+           font-size: 24px;
+           font-weight: bold;
+       }
+      
+       .waiting-message {
+           text-align: center;
+           padding: 60px 20px;
+           font-size: 18px;
+           color: #666;
+       }
+      
+       .waiting-message h2 {
+           border: none;
+           margin-bottom: 20px;
+       }
+      
+       .connection-status {
+           text-align: center;
+           font-size: 12px;
+           color: #666;
+           margin-top: 10px;
+       }
+   </style>
+   <script type="module">
+       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+       import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
+
+       // Firebase configuration - same as admin (iacs project)
+       const firebaseConfig = {
+           apiKey: "AIzaSyBpkEnq2Kjotqm9Ukk2Cklj6ACZjWq1dEY",
+           authDomain: "iacs-95ea7.firebaseapp.com",
+           databaseURL: "https://iacs-95ea7-default-rtdb.asia-southeast1.firebasedatabase.app",
+           projectId: "iacs-95ea7",
+           storageBucket: "iacs-95ea7.firebasestorage.app",
+           messagingSenderId: "413625128566",
+           appId: "1:413625128566:web:b7499fd9a6e58d42203157",
+           measurementId: "G-2ZKQ8M550N"
+       };
+
+       // Initialize Firebase
+       const app = initializeApp(firebaseConfig);
+       const analytics = getAnalytics(app);
+       console.log('Firebase initialized for viewer');
+
+
+       const realtimeDB = getDatabase(app);
+       const realtimeGameRef = ref(realtimeDB, 'currentGame');
+
+
+       let gameState = null;
+
+
+       function updateLiveIndicator(status) {
+           const indicator = document.getElementById('live-indicator');
+           if (status === 'connected') {
+               indicator.textContent = '● LIVE';
+               indicator.className = 'live-indicator';
+           } else if (status === 'disconnected') {
+               indicator.textContent = '● DISCONNECTED';
+               indicator.className = 'live-indicator disconnected';
+           } else if (status === 'no-game') {
+               indicator.textContent = '● WAITING FOR GAME';
+               indicator.className = 'live-indicator no-game';
+           }
+       }
+
+
+       function updateDisplay() {
+           const gamePanel = document.getElementById('game-panel');
+           const waitingPanel = document.getElementById('waiting-panel');
+
+
+           if (!gameState || !gameState.isActive) {
+               gamePanel.classList.add('hidden');
+               waitingPanel.classList.remove('hidden');
+               updateLiveIndicator('no-game');
+               return;
+           }
+
+
+           waitingPanel.classList.add('hidden');
+           gamePanel.classList.remove('hidden');
+           updateLiveIndicator('connected');
+
+
+           // Update team names
+           document.getElementById('display-team1').textContent = gameState.teams.team1.id || 'Team 1';
+           document.getElementById('display-team2').textContent = gameState.teams.team2.id || 'Team 2';
+
+
+           // Update scores
+           document.getElementById('score1').textContent = gameState.teams.team1.score || 0;
+           document.getElementById('score2').textContent = gameState.teams.team2.score || 0;
+
+
+           // Update set info
+           const setsWon1 = gameState.teams.team1.setsWon || 0;
+           const setsWon2 = gameState.teams.team2.setsWon || 0;
+           document.getElementById('period-display').textContent = `Set ${gameState.setNumber || 1}`;
+           document.getElementById('sets-won').textContent = `Sets: ${setsWon1} - ${setsWon2}`;
+
+
+           // Update player statistics
+           updatePlayerStats();
+       }
+
+
+       function updatePlayerStats() {
+           const statsContainer = document.getElementById('player-stats-display');
+           if (!statsContainer) return;
+
+
+           const team1Label = gameState.teams.team1.id || 'Team 1';
+           const team2Label = gameState.teams.team2.id || 'Team 2';
+
+
+           let statsHtml = '';
+
+
+           // Team 1 players
+           if (gameState.players && gameState.players.team1 && Object.keys(gameState.players.team1).length > 0) {
+               statsHtml += '<h4>' + team1Label + ' Player Statistics</h4>';
+               statsHtml += '<table class="player-stats-table">';
+               statsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+               statsHtml += '<tbody>';
+              
+               Object.keys(gameState.players.team1).forEach(function(playerName) {
+                   const player = gameState.players.team1[playerName];
+                   statsHtml += '<tr>';
+                   statsHtml += '<td class="player-name">' + playerName + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                   statsHtml += '</tr>';
+               });
+              
+               statsHtml += '</tbody></table>';
+           }
+
+
+           // Team 2 players
+           if (gameState.players && gameState.players.team2 && Object.keys(gameState.players.team2).length > 0) {
+               statsHtml += '<h4>' + team2Label + ' Player Statistics</h4>';
+               statsHtml += '<table class="player-stats-table">';
+               statsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+               statsHtml += '<tbody>';
+              
+               Object.keys(gameState.players.team2).forEach(function(playerName) {
+                   const player = gameState.players.team2[playerName];
+                   statsHtml += '<tr>';
+                   statsHtml += '<td class="player-name">' + playerName + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                   statsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                   statsHtml += '</tr>';
+               });
+              
+               statsHtml += '</tbody></table>';
+           }
+
+
+           if (statsHtml === '') {
+               statsHtml = '<p>No player statistics available yet.</p>';
+           }
+
+
+           statsContainer.innerHTML = statsHtml;
+       }
+
+
+       function subscribeToGame() {
+           console.log('Connecting to Firebase Realtime Database...');
+
+
+           // Monitor connection status
+           const connectedRef = ref(realtimeDB, '.info/connected');
+           onValue(connectedRef, (snapshot) => {
+               if (snapshot.val() === true) {
+                   console.log('✓ Connected to Firebase');
+                   document.getElementById('connection-status').textContent = 'Connected to server';
+               } else {
+                   console.log('✗ Disconnected from Firebase');
+                   document.getElementById('connection-status').textContent = 'Disconnected - reconnecting...';
+                   updateLiveIndicator('disconnected');
+               }
+           });
+
+
+           // Listen for game updates
+           onValue(realtimeGameRef, (snapshot) => {
+               console.log('Received game update');
+
+
+               if (!snapshot.exists()) {
+                   console.log('No game data found');
+                   gameState = null;
+                   updateDisplay();
+                   return;
+               }
+
+
+               gameState = snapshot.val();
+               console.log('Game state updated:', gameState);
+               updateDisplay();
+           }, (error) => {
+               console.error('Error connecting to database:', error);
+               updateLiveIndicator('disconnected');
+           });
+       }
+
+
+       // Initialize on page load
+       document.addEventListener('DOMContentLoaded', function() {
+           console.log('Viewer page loaded');
+           subscribeToGame();
+       });
+   </script>
+</head>
+<body>
+   <div class="container">
+       <div class="viewer-header">
+           <div id="live-indicator" class="live-indicator no-game">● CONNECTING...</div>
+           <h1>Live Game Viewer</h1>
+           <div id="connection-status" class="connection-status">Connecting to server...</div>
+       </div>
+
+
+       <!-- Waiting panel - shown when no active game -->
+       <div id="waiting-panel" class="card">
+           <div class="waiting-message">
+               <h2>Waiting for Game</h2>
+               <p>No active game at the moment.</p>
+               <p>The score will appear here automatically when a match starts.</p>
+           </div>
+       </div>
+
+
+       <!-- Game panel - shown when game is active -->
+       <div id="game-panel" class="hidden">
+           <div class="card">
+               <div class="score-display">
+                   <div class="team-score">
+                       <div class="team-label" id="display-team1">Team 1</div>
+                       <div class="score" id="score1">0</div>
+                   </div>
+                   <div class="period-info">
+                       <div id="period-display">Set 1</div>
+                   </div>
+                   <div class="team-score">
+                       <div class="team-label" id="display-team2">Team 2</div>
+                       <div class="score" id="score2">0</div>
+                   </div>
+               </div>
+
+
+               <div class="set-info">
+                   <h3>Match Progress</h3>
+                   <div class="sets-won" id="sets-won">Sets: 0 - 0</div>
+               </div>
+           </div>
+
+
+           <div class="card">
+               <h2>Player Statistics</h2>
+               <div class="player-stats-container" id="player-stats-display">
+                   <p>No player statistics available yet.</p>
+               </div>
+           </div>
+       </div>
+   </div>
+</body>
+</html>
+
+
+

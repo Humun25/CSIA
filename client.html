@@ -3,85 +3,175 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Live Game - Viewer</title>
-   <link rel="stylesheet" href="draft1.css">
+   <title>User interface</title>
    <style>
-       /* Additional viewer-specific styles */
+       * { margin: 0; padding: 0; box-sizing: border-box; }
+       body {
+           font-family: Arial, sans-serif;
+           background: linear-gradient(to right, #ffee00, #002fff);
+           min-height: 100vh;
+           color: #000000;
+           padding: 20px;
+       }
+       .container { max-width: 1200px; margin: 0 auto; }
        .viewer-header {
            text-align: center;
-           margin-bottom: 30px;
-       }
-      
-       .live-indicator {
-           display: inline-block;
-           background: #00aa00;
-           color: white;
-           padding: 5px 15px;
-           font-weight: bold;
-           font-size: 14px;
-           margin-bottom: 10px;
-           animation: pulse 2s infinite;
-       }
-      
-       .live-indicator.disconnected {
-           background: #aa0000;
-           animation: none;
-       }
-      
-       .live-indicator.no-game {
-           background: #808080;
-           animation: none;
-       }
-      
-       @keyframes pulse {
-           0%, 100% { opacity: 1; }
-           50% { opacity: 0.7; }
-       }
-      
-       .score-display {
-           font-size: 1.2em;
-       }
-      
-       .score {
-           font-size: 80px;
-       }
-      
-       .set-info {
-           text-align: center;
-           margin: 20px 0;
-           padding: 15px;
-           background: #f5f5f5;
-           border: 1px solid #000000;
-       }
-      
-       .set-info h3 {
-           margin-bottom: 10px;
-       }
-      
-       .sets-won {
-           font-size: 24px;
-           font-weight: bold;
-       }
-      
-       .waiting-message {
-           text-align: center;
-           padding: 60px 20px;
-           font-size: 18px;
-           color: #666;
-       }
-      
-       .waiting-message h2 {
-           border: none;
            margin-bottom: 20px;
        }
-      
+       h1 {
+           color: #000000;
+           margin-bottom: 10px;
+           font-size: 28px;
+           font-weight: bold;
+       }
+       h2 {
+           color: #000000;
+           margin-bottom: 15px;
+           font-size: 20px;
+           border-bottom: 2px solid #000000;
+           padding-bottom: 5px;
+       }
+       h3 {
+           color: #000000;
+           margin-bottom: 10px;
+           font-size: 16px;
+           font-weight: bold;
+       }
+       h4 {
+           color: #000000;
+           margin-bottom: 10px;
+           font-size: 14px;
+           font-weight: bold;
+       }
+       .live-indicator {
+           font-weight: bold;
+           color: #00aa00;
+           margin-bottom: 8px;
+       }
+       .live-indicator.disconnected { color: #aa0000; }
+       .live-indicator.no-game { color: #161616ca; }
        .connection-status {
+           font-size: 14px;
+           color: #000000;
+       }
+       .card {
+           background: #ffffff;
+           border: 1px solid #000000;
+           padding: 20px;
+           margin-bottom: 20px;
+       }
+       .score-display {
+           display: grid;
+           grid-template-columns: 1fr auto 1fr;
+           gap: 20px;
+           align-items: center;
+           margin: 20px 0;
+           padding: 20px;
+           border: 1px solid #000000;
+           background: #f5f5f5;
+       }
+       .team-score { text-align: center; padding: 10px; }
+       .team-label {
+           font-size: 18px;
+           font-weight: bold;
+           color: #000000;
+           margin-bottom: 10px;
+       }
+       .score {
+           font-size: 60px;
+           font-weight: bold;
+           color: #000000;
+           line-height: 1;
+       }
+       .period-info {
            text-align: center;
-           font-size: 12px;
-           color: #666;
+           padding: 10px 20px;
+           background: #000000;
+           color: white;
+           font-weight: bold;
+           font-size: 16px;
+       }
+       .set-info {
+           margin-top: 30px;
+           text-align: center;
+       }
+       .set-info h3 {
+           font-size: 42px;
+           font-weight: bold;
+           color: #000000;
+           margin-bottom: 15px;
+       }
+       .sets-won {
+           font-size: 36px;
+           font-weight: bold;
+           color: #000000;
+       }
+       .player-stats-container { margin-top: 20px; }
+       .previous-sets-container {
+           margin-top: 40px;
+           padding-top: 30px;
+           border-top: 2px solid #000000;
+       }
+       .previous-sets-container h3 {
+           font-size: 24px;
+           font-weight: bold;
+           color: #000000;
+           margin-bottom: 20px;
+           text-align: center;
+       }
+       .previous-set-section {
+           margin-bottom: 30px;
+       }
+       .previous-set-section h4 {
+           font-size: 20px;
+           font-weight: bold;
+           color: #000000;
+           margin-bottom: 15px;
+           text-align: center;
+       }
+       .player-stats-table {
+           width: 100%;
+           border-collapse: collapse;
            margin-top: 10px;
+           background: #ffffff;
+           border: 1px solid #000000;
+       }
+       .player-stats-table thead {
+           background: #000000;
+           color: white;
+       }
+       .player-stats-table th {
+           padding: 10px;
+           text-align: left;
+           font-weight: bold;
+           font-size: 20px;
+           border: 1px solid #ffffff;
+       }
+       .player-stats-table td {
+           padding: 10px;
+           border: 1px solid #000000;
+       }
+       .player-name { font-weight: bold; color: #000000; }
+       .player-stat-value {
+           text-align: center;
+           font-weight: bold;
+           color: #000000;
+           font-size: 16px;
+       }
+       .waiting-message { text-align: center; }
+       .hidden { display: none !important; }
+       @media (max-width: 768px) {
+           .score { font-size: 40px; }
+           .score-display {
+               grid-template-columns: 1fr;
+               gap: 15px;
+           }
+           .player-stats-table { font-size: 12px; }
+           .player-stats-table th,
+           .player-stats-table td { padding: 8px; }
        }
    </style>
+   
    <script type="module">
        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
@@ -115,13 +205,13 @@
        function updateLiveIndicator(status) {
            const indicator = document.getElementById('live-indicator');
            if (status === 'connected') {
-               indicator.textContent = '● LIVE';
+               indicator.textContent = '● LIVE game';
                indicator.className = 'live-indicator';
            } else if (status === 'disconnected') {
-               indicator.textContent = '● DISCONNECTED';
+               indicator.textContent = '● DISCONNECTED from database at the moment';
                indicator.className = 'live-indicator disconnected';
            } else if (status === 'no-game') {
-               indicator.textContent = '● WAITING FOR GAME';
+               indicator.textContent = '● WAITING FOR THE Admin to start the game';
                indicator.className = 'live-indicator no-game';
            }
        }
@@ -159,11 +249,14 @@
            const setsWon1 = gameState.teams.team1.setsWon || 0;
            const setsWon2 = gameState.teams.team2.setsWon || 0;
            document.getElementById('period-display').textContent = `Set ${gameState.setNumber || 1}`;
-           document.getElementById('sets-won').textContent = `Sets: ${setsWon1} - ${setsWon2}`;
+           document.getElementById('sets-won').textContent = `${setsWon1} - ${setsWon2}`;
 
 
            // Update player statistics
            updatePlayerStats();
+           
+           // Update previous sets statistics
+           updatePreviousSetsStats();
        }
 
 
@@ -181,7 +274,7 @@
 
            // Team 1 players
            if (gameState.players && gameState.players.team1 && Object.keys(gameState.players.team1).length > 0) {
-               statsHtml += '<h4>' + team1Label + ' Player Statistics</h4>';
+               statsHtml += '<h3>' + team1Label + ' Player Statistics</h3>';
                statsHtml += '<table class="player-stats-table">';
                statsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
                statsHtml += '<tbody>';
@@ -204,7 +297,7 @@
 
            // Team 2 players
            if (gameState.players && gameState.players.team2 && Object.keys(gameState.players.team2).length > 0) {
-               statsHtml += '<h4>' + team2Label + ' Player Statistics</h4>';
+               statsHtml += '<h3>' + team2Label + ' Player Statistics</h3>';
                statsHtml += '<table class="player-stats-table">';
                statsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
                statsHtml += '<tbody>';
@@ -231,6 +324,84 @@
 
 
            statsContainer.innerHTML = statsHtml;
+       }
+
+
+       function updatePreviousSetsStats() {
+           const previousSetsContainer = document.getElementById('previous-sets-display');
+           if (!previousSetsContainer) return;
+
+
+           // Check if there are previous sets
+           if (!gameState.setHistory || gameState.setHistory.length === 0) {
+               previousSetsContainer.innerHTML = '';
+               previousSetsContainer.classList.add('hidden');
+               return;
+           }
+
+
+           previousSetsContainer.classList.remove('hidden');
+           const team1Label = gameState.teams.team1.id || 'Team 1';
+           const team2Label = gameState.teams.team2.id || 'Team 2';
+
+
+           let previousSetsHtml = '';
+
+
+           // Loop through each previous set
+           gameState.setHistory.forEach(function(setData) {
+               previousSetsHtml += '<div class="previous-set-section">';
+               previousSetsHtml += '<h4>Set ' + setData.setNumber + ' - Final Score: ' + setData.team1Score + ' - ' + setData.team2Score + '</h4>';
+               
+               // Team 1 players from this set
+               if (setData.team1Players && Object.keys(setData.team1Players).length > 0) {
+                   previousSetsHtml += '<h4>' + team1Label + ' Player Statistics</h4>';
+                   previousSetsHtml += '<table class="player-stats-table">';
+                   previousSetsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+                   previousSetsHtml += '<tbody>';
+                  
+                   Object.keys(setData.team1Players).forEach(function(playerName) {
+                       const player = setData.team1Players[playerName];
+                       previousSetsHtml += '<tr>';
+                       previousSetsHtml += '<td class="player-name">' + playerName + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                       previousSetsHtml += '</tr>';
+                   });
+                  
+                   previousSetsHtml += '</tbody></table>';
+               }
+               
+               // Team 2 players from this set
+               if (setData.team2Players && Object.keys(setData.team2Players).length > 0) {
+                   previousSetsHtml += '<h4>' + team2Label + ' Player Statistics</h4>';
+                   previousSetsHtml += '<table class="player-stats-table">';
+                   previousSetsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+                   previousSetsHtml += '<tbody>';
+                  
+                   Object.keys(setData.team2Players).forEach(function(playerName) {
+                       const player = setData.team2Players[playerName];
+                       previousSetsHtml += '<tr>';
+                       previousSetsHtml += '<td class="player-name">' + playerName + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                       previousSetsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                       previousSetsHtml += '</tr>';
+                   });
+                  
+                   previousSetsHtml += '</tbody></table>';
+               }
+               
+               previousSetsHtml += '</div>';
+           });
+
+
+           previousSetsContainer.innerHTML = previousSetsHtml;
        }
 
 
@@ -275,7 +446,7 @@
        }
 
 
-       // Initialize on page load
+       // message hha nga
        document.addEventListener('DOMContentLoaded', function() {
            console.log('Viewer page loaded');
            subscribeToGame();
@@ -285,13 +456,11 @@
 <body>
    <div class="container">
        <div class="viewer-header">
-           <div id="live-indicator" class="live-indicator no-game">● CONNECTING...</div>
-           <h1>Live Game Viewer</h1>
-           <div id="connection-status" class="connection-status">Connecting to server...</div>
+           <div id="live-indicator" class="live-indicator no-game">CONNECTING...SOON</div>
+           <h1>Shine-Ue Volleyball tournament live game stats</h1>
+           <div id="connection-status" class="connection-status">Connecting to server... please wait</div>
        </div>
 
-
-       <!-- Waiting panel - shown when no active game -->
        <div id="waiting-panel" class="card">
            <div class="waiting-message">
                <h2>Waiting for Game</h2>
@@ -321,7 +490,7 @@
 
                <div class="set-info">
                    <h3>Match Progress</h3>
-                   <div class="sets-won" id="sets-won">Sets: 0 - 0</div>
+                   <div class="sets-won" id="sets-won">0 - 0</div>
                </div>
            </div>
 
@@ -330,6 +499,9 @@
                <h2>Player Statistics</h2>
                <div class="player-stats-container" id="player-stats-display">
                    <p>No player statistics available yet.</p>
+               </div>
+               <div class="previous-sets-container hidden" id="previous-sets-display">
+                   <h3>Previous Sets Statistics</h3>
                </div>
            </div>
        </div>

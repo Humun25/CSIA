@@ -160,15 +160,184 @@
        }
        .waiting-message { text-align: center; }
        .hidden { display: none !important; }
+       
+       /* Mobile Responsive Styles */
        @media (max-width: 768px) {
-           .score { font-size: 40px; }
+           body {
+               padding: 10px;
+           }
+           
+           h1 {
+               font-size: 20px;
+               margin-bottom: 8px;
+           }
+           
+           h2 {
+               font-size: 18px;
+               margin-bottom: 10px;
+           }
+           
+           h3 {
+               font-size: 16px;
+           }
+           
+           .card {
+               padding: 15px;
+               margin-bottom: 15px;
+           }
+           
            .score-display {
                grid-template-columns: 1fr;
                gap: 15px;
+               padding: 15px;
+               margin: 15px 0;
            }
-           .player-stats-table { font-size: 12px; }
-           .player-stats-table th,
-           .player-stats-table td { padding: 8px; }
+           
+           .team-label {
+               font-size: 16px;
+               margin-bottom: 8px;
+           }
+           
+           .score {
+               font-size: 48px;
+           }
+           
+           .period-info {
+               padding: 8px 15px;
+               font-size: 14px;
+           }
+           
+           .set-info {
+               margin-top: 20px;
+           }
+           
+           .set-info h3 {
+               font-size: 28px;
+               margin-bottom: 10px;
+           }
+           
+           .sets-won {
+               font-size: 24px;
+           }
+           
+           .previous-sets-container {
+               margin-top: 30px;
+               padding-top: 20px;
+           }
+           
+           .previous-sets-container h3 {
+               font-size: 20px;
+               margin-bottom: 15px;
+           }
+           
+           .previous-set-section {
+               margin-bottom: 25px;
+           }
+           
+           .previous-set-section h4 {
+               font-size: 18px;
+               margin-bottom: 10px;
+           }
+           
+           .player-stats-container {
+               margin-top: 15px;
+               overflow-x: auto;
+           }
+           
+           .player-stats-table {
+               font-size: 12px;
+               min-width: 600px;
+           }
+           
+           .player-stats-table th {
+               padding: 8px 6px;
+               font-size: 14px;
+               white-space: nowrap;
+           }
+           
+           .player-stats-table td {
+               padding: 8px 6px;
+               font-size: 12px;
+           }
+           
+           .player-stat-value {
+               font-size: 14px;
+           }
+           
+           .connection-status {
+               font-size: 12px;
+           }
+           
+           .live-indicator {
+               font-size: 14px;
+           }
+       }
+       
+       @media (max-width: 480px) {
+           body {
+               padding: 8px;
+           }
+           
+           h1 {
+               font-size: 18px;
+           }
+           
+           h2 {
+               font-size: 16px;
+           }
+           
+           .card {
+               padding: 12px;
+               margin-bottom: 12px;
+           }
+           
+           .score-display {
+               padding: 12px;
+               gap: 12px;
+           }
+           
+           .team-label {
+               font-size: 14px;
+           }
+           
+           .score {
+               font-size: 40px;
+           }
+           
+           .set-info h3 {
+               font-size: 24px;
+           }
+           
+           .sets-won {
+               font-size: 20px;
+           }
+           
+           .previous-sets-container h3 {
+               font-size: 18px;
+           }
+           
+           .previous-set-section h4 {
+               font-size: 16px;
+           }
+           
+           .player-stats-table {
+               font-size: 11px;
+               min-width: 550px;
+           }
+           
+           .player-stats-table th {
+               padding: 6px 4px;
+               font-size: 12px;
+           }
+           
+           .player-stats-table td {
+               padding: 6px 4px;
+               font-size: 11px;
+           }
+           
+           .player-stat-value {
+               font-size: 12px;
+           }
        }
    </style>
    
@@ -270,13 +439,23 @@
 
 
            let statsHtml = '';
+           
+           // Check if there are any player statistics to display
+           const hasTeam1Players = gameState.players && gameState.players.team1 && Object.keys(gameState.players.team1).length > 0;
+           const hasTeam2Players = gameState.players && gameState.players.team2 && Object.keys(gameState.players.team2).length > 0;
+           
+           if (hasTeam1Players || hasTeam2Players) {
+               // Add "Current Set" heading
+               statsHtml += '<div class="previous-set-section">';
+               statsHtml += '<h4>Current Set</h4>';
+           }
 
 
            // Team 1 players
-           if (gameState.players && gameState.players.team1 && Object.keys(gameState.players.team1).length > 0) {
+           if (hasTeam1Players) {
                statsHtml += '<h3>' + team1Label + ' Player Statistics</h3>';
                statsHtml += '<table class="player-stats-table">';
-               statsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+               statsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
                statsHtml += '<tbody>';
               
                Object.keys(gameState.players.team1).forEach(function(playerName) {
@@ -296,10 +475,10 @@
 
 
            // Team 2 players
-           if (gameState.players && gameState.players.team2 && Object.keys(gameState.players.team2).length > 0) {
+           if (hasTeam2Players) {
                statsHtml += '<h3>' + team2Label + ' Player Statistics</h3>';
                statsHtml += '<table class="player-stats-table">';
-               statsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+               statsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
                statsHtml += '<tbody>';
               
                Object.keys(gameState.players.team2).forEach(function(playerName) {
@@ -315,6 +494,11 @@
                });
               
                statsHtml += '</tbody></table>';
+           }
+           
+           // Close the current set section if we opened it
+           if (hasTeam1Players || hasTeam2Players) {
+               statsHtml += '</div>';
            }
 
 
@@ -357,7 +541,7 @@
                if (setData.team1Players && Object.keys(setData.team1Players).length > 0) {
                    previousSetsHtml += '<h4>' + team1Label + ' Player Statistics</h4>';
                    previousSetsHtml += '<table class="player-stats-table">';
-                   previousSetsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+                   previousSetsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
                    previousSetsHtml += '<tbody>';
                   
                    Object.keys(setData.team1Players).forEach(function(playerName) {
@@ -379,7 +563,7 @@
                if (setData.team2Players && Object.keys(setData.team2Players).length > 0) {
                    previousSetsHtml += '<h4>' + team2Label + ' Player Statistics</h4>';
                    previousSetsHtml += '<table class="player-stats-table">';
-                   previousSetsHtml += '<thead><tr><th>Player</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+                   previousSetsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
                    previousSetsHtml += '<tbody>';
                   
                    Object.keys(setData.team2Players).forEach(function(playerName) {

@@ -5,193 +5,218 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>User interface</title>
    <style>
-       * { margin: 0; padding: 0; box-sizing: border-box; }
-       body {
-           font-family: Arial, sans-serif;
-           background: linear-gradient(to right, #ffee00, #002fff);
-           min-height: 100vh;
-           color: #000000;
-           padding: 8px;
-       }
-       .container { max-width: 100%; margin: 0 auto; }
-       .viewer-header {
-           text-align: center;
-           margin-bottom: 20px;
-       }
-       h1 {
-           color: #000000;
-           margin-bottom: 8px;
-           font-size: 18px;
-           font-weight: bold;
-           line-height: 1.2;
-       }
-       h2 {
-           color: #000000;
-           margin-bottom: 10px;
-           font-size: 16px;
-           border-bottom: 2px solid #000000;
-           padding-bottom: 5px;
-       }
-       h3 {
-           color: #000000;
-           margin-bottom: 8px;
-           font-size: 16px;
-           font-weight: bold;
-       }
-       h4 {
-           color: #000000;
-           margin-bottom: 8px;
-           font-size: 14px;
-           font-weight: bold;
-       }
-       .live-indicator {
-           font-weight: bold;
-           color: #00aa00;
-           margin-bottom: 6px;
-           font-size: 12px;
-       }
-       .live-indicator.disconnected { color: #aa0000; }
-       .live-indicator.no-game { color: #161616ca; }
-       .connection-status {
-           font-size: 11px;
-           color: #000000;
-       }
-       .card {
-           background: #ffffff;
-           border: 1px solid #000000;
-           padding: 12px;
-           margin-bottom: 12px;
-       }
-       .score-display {
-           display: grid;
-           grid-template-columns: 1fr;
-           gap: 12px;
-           align-items: center;
-           margin: 12px 0;
-           padding: 12px;
-           border: 1px solid #000000;
-           background: #f5f5f5;
-       }
-       .team-score { text-align: center; padding: 8px; }
-       .team-label {
-           font-size: 14px;
-           font-weight: bold;
-           color: #000000;
-           margin-bottom: 6px;
-       }
-       .score {
-           font-size: 40px;
-           font-weight: bold;
-           color: #000000;
-           line-height: 1;
-       }
-       .period-info {
-           text-align: center;
-           padding: 6px 12px;
-           background: #000000;
-           color: white;
-           font-weight: bold;
-           font-size: 12px;
-       }
-       .set-info {
-           margin-top: 20px;
-           text-align: center;
-       }
-       .set-info h3 {
-           font-size: 24px;
-           font-weight: bold;
-           color: #000000;
-           margin-bottom: 10px;
-       }
-       .sets-won {
-           font-size: 20px;
-           font-weight: bold;
-           color: #000000;
-       }
-       .player-stats-container {
-           margin-top: 15px;
-           overflow-x: auto;
-           -webkit-overflow-scrolling: touch;
-           scrollbar-width: thin;
-       }
-       .player-stats-container::-webkit-scrollbar {
-           height: 8px;
-       }
-       .player-stats-container::-webkit-scrollbar-track {
-           background: #f1f1f1;
-       }
-       .player-stats-container::-webkit-scrollbar-thumb {
-           background: #888;
-           border-radius: 4px;
-       }
-       .previous-sets-container {
-           margin-top: 30px;
-           padding-top: 20px;
-           border-top: 2px solid #000000;
-       }
-       .previous-sets-container h3 {
-           font-size: 18px;
-           font-weight: bold;
-           color: #000000;
-           margin-bottom: 15px;
-           text-align: center;
-       }
-       .previous-set-section {
-           margin-bottom: 25px;
-       }
-       .previous-set-section h4 {
-           font-size: 16px;
-           font-weight: bold;
-           color: #000000;
-           margin-bottom: 10px;
-           text-align: center;
-       }
-       .player-stats-table {
-           width: 100%;
-           border-collapse: collapse;
-           margin-top: 8px;
-           background: #ffffff;
-           border: 1px solid #000000;
-           font-size: 11px;
-           table-layout: auto;
-       }
-       .player-stats-table thead {
-           background: #000000;
-           color: white;
-       }
-       .player-stats-table th {
-           padding: 6px 4px;
-           text-align: center;
-           font-weight: bold;
-           font-size: 11px;
-           border: 1px solid #ffffff;
-           white-space: nowrap;
-       }
-       .player-stats-table th:first-child {
-           text-align: left;
-           min-width: 80px;
-       }
-       .player-stats-table td {
-           padding: 6px 4px;
-           border: 1px solid #000000;
-           font-size: 11px;
-       }
-       .player-name {
-           font-weight: bold;
-           color: #000000;
-           text-align: left;
-           min-width: 80px;
-       }
-       .player-stat-value {
-           text-align: center;
-           font-weight: bold;
-           color: #000000;
-           font-size: 11px;
-           min-width: 45px;
-       }
-       .waiting-message { text-align: center; }
-       .hidden { display: none !important; }
-       
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #ffee00, #002fff);
+    min-height: 100vh;
+    color: #000000;
+    padding: 15px; /* Increased padding */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to the top */
+}
+.container {
+    max-width: 90%; /* Increased max-width for better use of space */
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+}
+.viewer-header {
+    text-align: center;
+    margin-bottom: 25px; /* Increased margin */
+}
+h1 {
+    color: #000000;
+    margin-bottom: 10px; /* Adjusted margin */
+    font-size: 24px; /* Increased font size */
+    font-weight: bold;
+    line-height: 1.2;
+}
+h2 {
+    color: #000000;
+    margin-bottom: 12px; /* Increased margin */
+    font-size: 20px; /* Increased font size */
+    border-bottom: 2px solid #000000;
+    padding-bottom: 8px; /* Increased padding */
+}
+h3 {
+    color: #000000;
+    margin-bottom: 10px; /* Adjusted margin */
+    font-size: 18px; /* Increased font size */
+    font-weight: bold;
+}
+h4 {
+    color: #000000;
+    margin-bottom: 10px; /* Adjusted margin */
+    font-size: 16px; /* Increased font size */
+    font-weight: bold;
+}
+.live-indicator {
+    font-weight: bold;
+    color: #00aa00;
+    margin-bottom: 8px; /* Adjusted margin */
+    font-size: 14px; /* Increased font size */
+}
+.live-indicator.disconnected { color: #aa0000; }
+.live-indicator.no-game { color: #161616ca; }
+.connection-status {
+    font-size: 12px; /* Increased font size */
+    color: #000000;
+}
+.card {
+    background: #ffffff;
+    border: 1px solid #000000;
+    padding: 15px; /* Increased padding */
+    margin-bottom: 15px; /* Increased margin */
+    border-radius: 8px; /* Added border-radius */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+}
+.score-display {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* For larger screens */
+    gap: 15px; /* Increased gap */
+    align-items: center;
+    margin: 15px 0; /* Increased margin */
+    padding: 15px; /* Increased padding */
+    border: 1px solid #000000;
+    background: #f5f5f5;
+    border-radius: 8px; /* Added border-radius */
+}
+@media (max-width: 768px) {
+    .score-display {
+        grid-template-columns: 1fr; /* Stack vertically on small screens */
+    }
+    .period-info {
+        order: -1; /* Move period info to the top on small screens */
+        margin-bottom: 10px;
+    }
+}
+.team-score { text-align: center; padding: 10px; } /* Increased padding */
+.team-label {
+    font-size: 16px; /* Increased font size */
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 8px; /* Adjusted margin */
+}
+.score {
+    font-size: 48px; /* Increased font size */
+    font-weight: bold;
+    color: #000000;
+    line-height: 1;
+}
+.period-info {
+    text-align: center;
+    padding: 8px 15px; /* Increased padding */
+    background: #000000;
+    color: white;
+    font-weight: bold;
+    font-size: 14px; /* Increased font size */
+    border-radius: 5px; /* Added border-radius */
+}
+.set-info {
+    margin-top: 25px; /* Increased margin */
+    text-align: center;
+    border-top: 1px dashed #000000; /* Changed to dashed line */
+    padding-top: 15px; /* Added padding */
+}
+.set-info h3 {
+    font-size: 28px; /* Increased font size */
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 12px; /* Adjusted margin */
+}
+.sets-won {
+    font-size: 22px; /* Increased font size */
+    font-weight: bold;
+    color: #000000;
+}
+.player-stats-container {
+    margin-top: 20px; /* Adjusted margin */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+.player-stats-container::-webkit-scrollbar {
+    height: 8px;
+}
+.player-stats-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.player-stats-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+.previous-sets-container {
+    margin-top: 35px; /* Increased margin */
+    padding-top: 20px;
+    border-top: 2px solid #000000;
+}
+.previous-sets-container h3 {
+    font-size: 20px; /* Increased font size */
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 18px; /* Increased margin */
+    text-align: center;
+}
+.previous-set-section {
+    margin-bottom: 30px; /* Increased margin */
+}
+.previous-set-section h4 {
+    font-size: 18px; /* Increased font size */
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 12px; /* Adjusted margin */
+    text-align: center;
+}
+.player-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Adjusted margin */
+    background: #ffffff;
+    border: 1px solid #000000;
+    font-size: 12px; /* Increased font size */
+    table-layout: auto;
+}
+.player-stats-table thead {
+    background: #000000;
+    color: white;
+}
+.player-stats-table th {
+    padding: 8px 6px; /* Increased padding */
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px; /* Increased font size */
+    border: 1px solid #555555; /* Lighter border for internal table lines */
+    white-space: nowrap;
+}
+.player-stats-table th:first-child {
+    text-align: left;
+    min-width: 90px; /* Adjusted min-width */
+}
+.player-stats-table td {
+    padding: 8px 6px; /* Increased padding */
+    border: 1px solid #aaaaaa; /* Lighter border for internal table lines */
+    font-size: 12px; /* Increased font size */
+}
+.player-name {
+    font-weight: bold;
+    color: #000000;
+    text-align: left;
+    min-width: 90px; /* Adjusted min-width */
+}
+.player-stat-value {
+    text-align: center;
+    font-weight: bold;
+    color: #000000;
+    font-size: 12px; /* Increased font size */
+    min-width: 50px; /* Adjusted min-width */
+}
+.waiting-message { text-align: center; padding: 20px; } /* Increased padding */
+.waiting-message h2 { margin-bottom: 10px; border-bottom: none;}
+.waiting-message p { font-size: 16px; margin-bottom: 8px;}
+.hidden { display: none !important; }
+
    </style>
    
    <script type="module">
@@ -494,14 +519,14 @@
    <div class="container">
        <div class="viewer-header">
            <div id="live-indicator" class="live-indicator no-game">CONNECTING...SOON</div>
-           <h1>Volleyball tournament live game stats</h1>
+           <h1>Shine-Ue Volleyball tournament live game stats</h1>
            <div id="connection-status" class="connection-status">Connecting to server... please wait</div>
        </div>
 
        <div id="waiting-panel" class="card">
            <div class="waiting-message">
                <h2>Waiting for Game</h2>
-               <p>The game will start shortly...</p>
+               <p>No active game at the moment.</p>
                <p>The score will appear here automatically when a match starts.</p>
            </div>
        </div>
@@ -526,7 +551,7 @@
 
 
                <div class="set-info">
-                   <h3>The web is down for technical issues, This is Student individual project, school holds no responsibility for this. I'm workin on the issue as fast as i can</h3>
+                   <h3>Match Progress</h3>
                    <div class="sets-won" id="sets-won">0 - 0</div>
                </div>
            </div>

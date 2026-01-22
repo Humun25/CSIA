@@ -1,575 +1,862 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>User interface</title>
-   <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User interface</title>
+  <style>
+     * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #ffee00, #002fff);
-    min-height: 100vh;
-    color: #000000;
-    padding: 15px; /* Increased padding */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align to the top */
+   font-family: Arial, sans-serif;
+   background: linear-gradient(to right, #ffee00, #002fff);
+   min-height: 100vh;
+   color: #000000;
+   padding: 15px; /* Increased padding */
+   display: flex;
+   justify-content: center;
+   align-items: flex-start; /* Align to the top */
 }
 .container {
-    max-width: 90%; /* Increased max-width for better use of space */
-    width: 100%;
-    margin: 0 auto;
-    padding: 10px;
+   max-width: 90%; /* Increased max-width for better use of space */
+   width: 100%;
+   margin: 0 auto;
+   padding: 10px;
 }
 .viewer-header {
-    text-align: center;
-    margin-bottom: 25px; /* Increased margin */
+   text-align: center;
+   margin-bottom: 25px; /* Increased margin */
 }
 h1 {
-    color: #000000;
-    margin-bottom: 10px; /* Adjusted margin */
-    font-size: 24px; /* Increased font size */
-    font-weight: bold;
-    line-height: 1.2;
+   color: #000000;
+   margin-bottom: 10px; /* Adjusted margin */
+   font-size: 24px; /* Increased font size */
+   font-weight: bold;
+   line-height: 1.2;
 }
 h2 {
-    color: #000000;
-    margin-bottom: 12px; /* Increased margin */
-    font-size: 20px; /* Increased font size */
-    border-bottom: 2px solid #000000;
-    padding-bottom: 8px; /* Increased padding */
+   color: #000000;
+   margin-bottom: 12px; /* Increased margin */
+   font-size: 20px; /* Increased font size */
+   border-bottom: 2px solid #000000;
+   padding-bottom: 8px; /* Increased padding */
 }
 h3 {
-    color: #000000;
-    margin-bottom: 10px; /* Adjusted margin */
-    font-size: 18px; /* Increased font size */
-    font-weight: bold;
+   color: #000000;
+   margin-bottom: 10px; /* Adjusted margin */
+   font-size: 18px; /* Increased font size */
+   font-weight: bold;
 }
 h4 {
-    color: #000000;
-    margin-bottom: 10px; /* Adjusted margin */
-    font-size: 16px; /* Increased font size */
-    font-weight: bold;
+   color: #000000;
+   margin-bottom: 10px; /* Adjusted margin */
+   font-size: 16px; /* Increased font size */
+   font-weight: bold;
 }
 .live-indicator {
-    font-weight: bold;
-    color: #00aa00;
-    margin-bottom: 8px; /* Adjusted margin */
-    font-size: 14px; /* Increased font size */
+   font-weight: bold;
+   color: #00aa00;
+   margin-bottom: 8px; /* Adjusted margin */
+   font-size: 14px; /* Increased font size */
 }
 .live-indicator.disconnected { color: #aa0000; }
 .live-indicator.no-game { color: #161616ca; }
 .connection-status {
-    font-size: 12px; /* Increased font size */
-    color: #000000;
+   font-size: 12px; /* Increased font size */
+   color: #000000;
 }
 .card {
-    background: #ffffff;
-    border: 1px solid #000000;
-    padding: 15px; /* Increased padding */
-    margin-bottom: 15px; /* Increased margin */
-    border-radius: 8px; /* Added border-radius */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+   background: #ffffff;
+   border: 1px solid #000000;
+   padding: 15px; /* Increased padding */
+   margin-bottom: 15px; /* Increased margin */
+   border-radius: 8px; /* Added border-radius */
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
 }
 .score-display {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr; /* For larger screens */
-    gap: 15px; /* Increased gap */
-    align-items: center;
-    margin: 15px 0; /* Increased margin */
-    padding: 15px; /* Increased padding */
-    border: 1px solid #000000;
-    background: #f5f5f5;
-    border-radius: 8px; /* Added border-radius */
+   display: grid;
+   grid-template-columns: 1fr auto 1fr; /* For larger screens */
+   gap: 15px; /* Increased gap */
+   align-items: center;
+   margin: 15px 0; /* Increased margin */
+   padding: 15px; /* Increased padding */
+   border: 1px solid #000000;
+   background: #f5f5f5;
+   border-radius: 8px; /* Added border-radius */
 }
 @media (max-width: 768px) {
-    .score-display {
-        grid-template-columns: 1fr; /* Stack vertically on small screens */
-    }
-    .period-info {
-        order: -1; /* Move period info to the top on small screens */
-        margin-bottom: 10px;
-    }
+   .score-display {
+       grid-template-columns: 1fr; /* Stack vertically on small screens */
+   }
+   .period-info {
+       order: -1; /* Move period info to the top on small screens */
+       margin-bottom: 10px;
+   }
 }
 .team-score { text-align: center; padding: 10px; } /* Increased padding */
 .team-label {
-    font-size: 16px; /* Increased font size */
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 8px; /* Adjusted margin */
+   font-size: 16px; /* Increased font size */
+   font-weight: bold;
+   color: #000000;
+   margin-bottom: 8px; /* Adjusted margin */
 }
 .score {
-    font-size: 48px; /* Increased font size */
-    font-weight: bold;
-    color: #000000;
-    line-height: 1;
+   font-size: 48px; /* Increased font size */
+   font-weight: bold;
+   color: #000000;
+   line-height: 1;
 }
 .period-info {
-    text-align: center;
-    padding: 8px 15px; /* Increased padding */
-    background: #000000;
-    color: white;
-    font-weight: bold;
-    font-size: 14px; /* Increased font size */
-    border-radius: 5px; /* Added border-radius */
+   text-align: center;
+   padding: 8px 15px; /* Increased padding */
+   background: #000000;
+   color: white;
+   font-weight: bold;
+   font-size: 14px; /* Increased font size */
+   border-radius: 5px; /* Added border-radius */
 }
 .set-info {
-    margin-top: 25px; /* Increased margin */
-    text-align: center;
-    border-top: 1px dashed #000000; /* Changed to dashed line */
-    padding-top: 15px; /* Added padding */
+   margin-top: 25px; /* Increased margin */
+   text-align: center;
+   border-top: 1px dashed #000000; /* Changed to dashed line */
+   padding-top: 15px; /* Added padding */
 }
 .set-info h3 {
-    font-size: 28px; /* Increased font size */
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 12px; /* Adjusted margin */
+   font-size: 28px; /* Increased font size */
+   font-weight: bold;
+   color: #000000;
+   margin-bottom: 12px; /* Adjusted margin */
 }
 .sets-won {
-    font-size: 22px; /* Increased font size */
-    font-weight: bold;
-    color: #000000;
+   font-size: 22px; /* Increased font size */
+   font-weight: bold;
+   color: #000000;
 }
 .player-stats-container {
-    margin-top: 20px; /* Adjusted margin */
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+   margin-top: 20px; /* Adjusted margin */
+   overflow-x: auto;
+   -webkit-overflow-scrolling: touch;
+   scrollbar-width: thin;
 }
 .player-stats-container::-webkit-scrollbar {
-    height: 8px;
+   height: 8px;
 }
 .player-stats-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
+   background: #f1f1f1;
 }
 .player-stats-container::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
+   background: #888;
+   border-radius: 4px;
 }
 .previous-sets-container {
-    margin-top: 35px; /* Increased margin */
-    padding-top: 20px;
-    border-top: 2px solid #000000;
+   margin-top: 35px; /* Increased margin */
+   padding-top: 20px;
+   border-top: 2px solid #000000;
 }
 .previous-sets-container h3 {
-    font-size: 20px; /* Increased font size */
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 18px; /* Increased margin */
-    text-align: center;
+   font-size: 20px; /* Increased font size */
+   font-weight: bold;
+   color: #000000;
+   margin-bottom: 18px; /* Increased margin */
+   text-align: center;
 }
 .previous-set-section {
-    margin-bottom: 30px; /* Increased margin */
+   margin-bottom: 30px; /* Increased margin */
 }
 .previous-set-section h4 {
-    font-size: 18px; /* Increased font size */
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 12px; /* Adjusted margin */
-    text-align: center;
+   font-size: 18px; /* Increased font size */
+   font-weight: bold;
+   color: #000000;
+   margin-bottom: 12px; /* Adjusted margin */
+   text-align: center;
 }
 .player-stats-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px; /* Adjusted margin */
-    background: #ffffff;
-    border: 1px solid #000000;
-    font-size: 12px; /* Increased font size */
-    table-layout: auto;
+   width: 100%;
+   border-collapse: collapse;
+   margin-top: 10px; /* Adjusted margin */
+   background: #ffffff;
+   border: 1px solid #000000;
+   font-size: 12px; /* Increased font size */
+   table-layout: auto;
 }
 .player-stats-table thead {
-    background: #000000;
-    color: white;
+   background: #000000;
+   color: white;
 }
 .player-stats-table th {
-    padding: 8px 6px; /* Increased padding */
-    text-align: center;
-    font-weight: bold;
-    font-size: 12px; /* Increased font size */
-    border: 1px solid #555555; /* Lighter border for internal table lines */
-    white-space: nowrap;
+   padding: 8px 6px; /* Increased padding */
+   text-align: center;
+   font-weight: bold;
+   font-size: 12px; /* Increased font size */
+   border: 1px solid #555555; /* Lighter border for internal table lines */
+   white-space: nowrap;
 }
 .player-stats-table th:first-child {
-    text-align: left;
-    min-width: 90px; /* Adjusted min-width */
+   text-align: left;
+   min-width: 90px; /* Adjusted min-width */
 }
 .player-stats-table td {
-    padding: 8px 6px; /* Increased padding */
-    border: 1px solid #aaaaaa; /* Lighter border for internal table lines */
-    font-size: 12px; /* Increased font size */
+   padding: 8px 6px; /* Increased padding */
+   border: 1px solid #aaaaaa; /* Lighter border for internal table lines */
+   font-size: 12px; /* Increased font size */
 }
 .player-name {
-    font-weight: bold;
-    color: #000000;
-    text-align: left;
-    min-width: 90px; /* Adjusted min-width */
+   font-weight: bold;
+   color: #000000;
+   text-align: left;
+   min-width: 90px; /* Adjusted min-width */
 }
 .player-stat-value {
-    text-align: center;
-    font-weight: bold;
-    color: #000000;
-    font-size: 12px; /* Increased font size */
-    min-width: 50px; /* Adjusted min-width */
+   text-align: center;
+   font-weight: bold;
+   color: #000000;
+   font-size: 12px; /* Increased font size */
+   min-width: 50px; /* Adjusted min-width */
 }
 .waiting-message { text-align: center; padding: 20px; } /* Increased padding */
 .waiting-message h2 { margin-bottom: 10px; border-bottom: none;}
 .waiting-message p { font-size: 16px; margin-bottom: 8px;}
 .hidden { display: none !important; }
 
-   </style>
-   
-   <script type="module">
-       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
-       import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
-
-       // Firebase configuration - same as admin (iacs project)
-       const firebaseConfig = {
-           apiKey: "AIzaSyBpkEnq2Kjotqm9Ukk2Cklj6ACZjWq1dEY",
-           authDomain: "iacs-95ea7.firebaseapp.com",
-           databaseURL: "https://iacs-95ea7-default-rtdb.asia-southeast1.firebasedatabase.app",
-           projectId: "iacs-95ea7",
-           storageBucket: "iacs-95ea7.firebasestorage.app",
-           messagingSenderId: "413625128566",
-           appId: "1:413625128566:web:b7499fd9a6e58d42203157",
-           measurementId: "G-2ZKQ8M550N"
-       };
-
-       // Initialize Firebase
-       const app = initializeApp(firebaseConfig);
-       const analytics = getAnalytics(app);
-       console.log('Firebase initialized for viewer');
 
 
-       const realtimeDB = getDatabase(app);
-       const realtimeGameRef = ref(realtimeDB, 'currentGame');
+
+  </style>
+ 
+  <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+      import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
 
 
-       let gameState = null;
 
 
-       function updateLiveIndicator(status) {
-           const indicator = document.getElementById('live-indicator');
-           if (status === 'connected') {
-               indicator.textContent = '● LIVE game';
-               indicator.className = 'live-indicator';
-           } else if (status === 'disconnected') {
-               indicator.textContent = '● DISCONNECTED from database at the moment';
-               indicator.className = 'live-indicator disconnected';
-           } else if (status === 'no-game') {
-               indicator.textContent = '● WAITING FOR THE Admin to start the game';
-               indicator.className = 'live-indicator no-game';
-           }
-       }
+      // Firebase configuration - same as admin (iacs project)
+      const firebaseConfig = {
+          apiKey: "AIzaSyBpkEnq2Kjotqm9Ukk2Cklj6ACZjWq1dEY",
+          authDomain: "iacs-95ea7.firebaseapp.com",
+          databaseURL: "https://iacs-95ea7-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "iacs-95ea7",
+          storageBucket: "iacs-95ea7.firebasestorage.app",
+          messagingSenderId: "413625128566",
+          appId: "1:413625128566:web:b7499fd9a6e58d42203157",
+          measurementId: "G-2ZKQ8M550N"
+      };
 
 
-       function updateDisplay() {
-           const gamePanel = document.getElementById('game-panel');
-           const waitingPanel = document.getElementById('waiting-panel');
 
 
-           if (!gameState || !gameState.isActive) {
-               gamePanel.classList.add('hidden');
-               waitingPanel.classList.remove('hidden');
-               updateLiveIndicator('no-game');
-               return;
-           }
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      console.log('Firebase initialized for viewer');
 
 
-           waitingPanel.classList.add('hidden');
-           gamePanel.classList.remove('hidden');
-           updateLiveIndicator('connected');
 
 
-           // Update team names
-           document.getElementById('display-team1').textContent = gameState.teams.team1.id || 'Team 1';
-           document.getElementById('display-team2').textContent = gameState.teams.team2.id || 'Team 2';
 
 
-           // Update scores
-           document.getElementById('score1').textContent = gameState.teams.team1.score || 0;
-           document.getElementById('score2').textContent = gameState.teams.team2.score || 0;
 
 
-           // Update set info
-           const setsWon1 = gameState.teams.team1.setsWon || 0;
-           const setsWon2 = gameState.teams.team2.setsWon || 0;
-           document.getElementById('period-display').textContent = `Set ${gameState.setNumber || 1}`;
-           document.getElementById('sets-won').textContent = `${setsWon1} - ${setsWon2}`;
+      const realtimeDB = getDatabase(app);
+      const realtimeGameRef = ref(realtimeDB, 'currentGame');
+      const realtimePreviousGameRef = ref(realtimeDB, 'previousGame');
 
 
-           // Update player statistics
-           updatePlayerStats();
-           
-           // Update previous sets statistics
-           updatePreviousSetsStats();
-       }
 
 
-       function updatePlayerStats() {
-           const statsContainer = document.getElementById('player-stats-display');
-           if (!statsContainer) return;
 
 
-           const team1Label = gameState.teams.team1.id || 'Team 1';
-           const team2Label = gameState.teams.team2.id || 'Team 2';
 
 
-           let statsHtml = '';
-           
-           // Check if there are any player statistics to display
-           const hasTeam1Players = gameState.players && gameState.players.team1 && Object.keys(gameState.players.team1).length > 0;
-           const hasTeam2Players = gameState.players && gameState.players.team2 && Object.keys(gameState.players.team2).length > 0;
-           
-           if (hasTeam1Players || hasTeam2Players) {
-               // Add "Current Set" heading
-               statsHtml += '<div class="previous-set-section">';
-               statsHtml += '<h4>Current Set</h4>';
-           }
+      let gameState = null;
+      let previousGameState = null;
 
 
-           // Team 1 players
-           if (hasTeam1Players) {
-               statsHtml += '<h3>' + team1Label + ' Player Statistics</h3>';
-               statsHtml += '<table class="player-stats-table">';
-               statsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
-               statsHtml += '<tbody>';
-              
-               Object.keys(gameState.players.team1).forEach(function(playerName) {
-                   const player = gameState.players.team1[playerName];
-                   statsHtml += '<tr>';
-                   statsHtml += '<td class="player-name">' + playerName + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
-                   statsHtml += '</tr>';
-               });
-              
-               statsHtml += '</tbody></table>';
-           }
 
 
-           // Team 2 players
-           if (hasTeam2Players) {
-               statsHtml += '<h3>' + team2Label + ' Player Statistics</h3>';
-               statsHtml += '<table class="player-stats-table">';
-               statsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
-               statsHtml += '<tbody>';
-              
-               Object.keys(gameState.players.team2).forEach(function(playerName) {
-                   const player = gameState.players.team2[playerName];
-                   statsHtml += '<tr>';
-                   statsHtml += '<td class="player-name">' + playerName + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
-                   statsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
-                   statsHtml += '</tr>';
-               });
-              
-               statsHtml += '</tbody></table>';
-           }
-           
-           // Close the current set section if we opened it
-           if (hasTeam1Players || hasTeam2Players) {
-               statsHtml += '</div>';
-           }
 
 
-           if (statsHtml === '') {
-               statsHtml = '<p>No player statistics available yet.</p>';
-           }
 
 
-           statsContainer.innerHTML = statsHtml;
-       }
+      function updateLiveIndicator(status) {
+          const indicator = document.getElementById('live-indicator');
+          if (status === 'connected') {
+              indicator.textContent = '● LIVE game';
+              indicator.className = 'live-indicator';
+          } else if (status === 'disconnected') {
+              indicator.textContent = '● DISCONNECTED from database at the moment';
+              indicator.className = 'live-indicator disconnected';
+          } else if (status === 'no-game') {
+              indicator.textContent = '● WAITING FOR THE Admin to start the game';
+              indicator.className = 'live-indicator no-game';
+          }
+      }
 
 
-       function updatePreviousSetsStats() {
-           const previousSetsContainer = document.getElementById('previous-sets-display');
-           if (!previousSetsContainer) return;
 
 
-           // Check if there are previous sets
-           if (!gameState.setHistory || gameState.setHistory.length === 0) {
-               previousSetsContainer.innerHTML = '';
-               previousSetsContainer.classList.add('hidden');
-               return;
-           }
 
 
-           previousSetsContainer.classList.remove('hidden');
-           const team1Label = gameState.teams.team1.id || 'Team 1';
-           const team2Label = gameState.teams.team2.id || 'Team 2';
 
 
-           let previousSetsHtml = '';
+      function updateDisplay() {
+          const gamePanel = document.getElementById('game-panel');
+          const waitingPanel = document.getElementById('waiting-panel');
 
 
-           // Loop through each previous set
-           gameState.setHistory.forEach(function(setData) {
-               previousSetsHtml += '<div class="previous-set-section">';
-               previousSetsHtml += '<h4>Set ' + setData.setNumber + ' - Final Score: ' + setData.team1Score + ' - ' + setData.team2Score + '</h4>';
-               
-               // Team 1 players from this set
-               if (setData.team1Players && Object.keys(setData.team1Players).length > 0) {
-                   previousSetsHtml += '<h4>' + team1Label + ' Player Statistics</h4>';
-                   previousSetsHtml += '<table class="player-stats-table">';
-                   previousSetsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
-                   previousSetsHtml += '<tbody>';
-                  
-                   Object.keys(setData.team1Players).forEach(function(playerName) {
-                       const player = setData.team1Players[playerName];
-                       previousSetsHtml += '<tr>';
-                       previousSetsHtml += '<td class="player-name">' + playerName + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
-                       previousSetsHtml += '</tr>';
-                   });
-                  
-                   previousSetsHtml += '</tbody></table>';
-               }
-               
-               // Team 2 players from this set
-               if (setData.team2Players && Object.keys(setData.team2Players).length > 0) {
-                   previousSetsHtml += '<h4>' + team2Label + ' Player Statistics</h4>';
-                   previousSetsHtml += '<table class="player-stats-table">';
-                   previousSetsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
-                   previousSetsHtml += '<tbody>';
-                  
-                   Object.keys(setData.team2Players).forEach(function(playerName) {
-                       const player = setData.team2Players[playerName];
-                       previousSetsHtml += '<tr>';
-                       previousSetsHtml += '<td class="player-name">' + playerName + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
-                       previousSetsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
-                       previousSetsHtml += '</tr>';
-                   });
-                  
-                   previousSetsHtml += '</tbody></table>';
-               }
-               
-               previousSetsHtml += '</div>';
-           });
 
 
-           previousSetsContainer.innerHTML = previousSetsHtml;
-       }
 
 
-       function subscribeToGame() {
-           console.log('Connecting to Firebase Realtime Database...');
 
 
-           // Monitor connection status
-           const connectedRef = ref(realtimeDB, '.info/connected');
-           onValue(connectedRef, (snapshot) => {
-               if (snapshot.val() === true) {
-                   console.log('✓ Connected to Firebase');
-                   document.getElementById('connection-status').textContent = 'Connected to server';
-               } else {
-                   console.log('✗ Disconnected from Firebase');
-                   document.getElementById('connection-status').textContent = 'Disconnected - reconnecting...';
-                   updateLiveIndicator('disconnected');
-               }
-           });
+          if (!gameState || !gameState.isActive) {
+              gamePanel.classList.add('hidden');
+              waitingPanel.classList.remove('hidden');
+              updateLiveIndicator('no-game');
+              return;
+          }
 
 
-           // Listen for game updates
-           onValue(realtimeGameRef, (snapshot) => {
-               console.log('Received game update');
 
 
-               if (!snapshot.exists()) {
-                   console.log('No game data found');
-                   gameState = null;
-                   updateDisplay();
-                   return;
-               }
 
 
-               gameState = snapshot.val();
-               console.log('Game state updated:', gameState);
-               updateDisplay();
-           }, (error) => {
-               console.error('Error connecting to database:', error);
-               updateLiveIndicator('disconnected');
-           });
-       }
 
 
-       // message hha nga
-       document.addEventListener('DOMContentLoaded', function() {
-           console.log('Viewer page loaded');
-           subscribeToGame();
-       });
-   </script>
+          waitingPanel.classList.add('hidden');
+          gamePanel.classList.remove('hidden');
+          updateLiveIndicator('connected');
+
+
+
+
+
+
+
+
+          // Update team names
+          document.getElementById('display-team1').textContent = gameState.teams.team1.id || 'Team 1';
+          document.getElementById('display-team2').textContent = gameState.teams.team2.id || 'Team 2';
+
+
+
+
+
+
+
+
+          // Update scores
+          document.getElementById('score1').textContent = gameState.teams.team1.score || 0;
+          document.getElementById('score2').textContent = gameState.teams.team2.score || 0;
+
+
+
+
+
+
+
+
+          // Update set info
+          const setsWon1 = gameState.teams.team1.setsWon || 0;
+          const setsWon2 = gameState.teams.team2.setsWon || 0;
+          document.getElementById('period-display').textContent = `Set ${gameState.setNumber || 1}`;
+          document.getElementById('sets-won').textContent = `${setsWon1} - ${setsWon2}`;
+
+
+
+
+
+
+
+
+          // Update player statistics
+          updatePlayerStats();
+         
+          // Update previous sets statistics
+          updatePreviousSetsStats();
+      }
+
+
+      function renderPreviousGame(previousState) {
+          const container = document.getElementById('previous-game-display');
+          if (!container) return;
+
+
+          if (!previousState) {
+              container.innerHTML = '<p>No previous match saved yet.</p>';
+              return;
+          }
+
+
+          const t1 = previousState?.teams?.team1?.id || 'Team 1';
+          const t2 = previousState?.teams?.team2?.id || 'Team 2';
+          const setsWon1 = previousState?.teams?.team1?.setsWon ?? 0;
+          const setsWon2 = previousState?.teams?.team2?.setsWon ?? 0;
+          const sets = Array.isArray(previousState?.setHistory) ? previousState.setHistory : [];
+
+
+          let html = '';
+          html += `<h3>Previous Match</h3>`;
+          html += `<h4>${t1} vs ${t2}</h4>`;
+          html += `<div class="sets-won">${setsWon1} - ${setsWon2}</div>`;
+
+
+          if (sets.length > 0) {
+              html += '<div style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">';
+              sets.forEach((s) => {
+                  const setNo = s.setNumber ?? '';
+                  const s1 = s.team1Score ?? 0;
+                  const s2 = s.team2Score ?? 0;
+                  html += `<div><strong>Set ${setNo}:</strong> ${t1} ${s1} - ${s2} ${t2}</div>`;
+              });
+              html += '</div>';
+          } else {
+              html += '<p style="margin-top:10px;">No set history saved for previous match.</p>';
+          }
+
+
+          container.innerHTML = html;
+      }
+
+
+
+
+
+
+
+
+      function updatePlayerStats() {
+          const statsContainer = document.getElementById('player-stats-display');
+          if (!statsContainer) return;
+
+
+
+
+
+
+
+
+          const team1Label = gameState.teams.team1.id || 'Team 1';
+          const team2Label = gameState.teams.team2.id || 'Team 2';
+
+
+
+
+
+
+
+
+          let statsHtml = '';
+         
+          // Check if there are any player statistics to display
+          const hasTeam1Players = gameState.players && gameState.players.team1 && Object.keys(gameState.players.team1).length > 0;
+          const hasTeam2Players = gameState.players && gameState.players.team2 && Object.keys(gameState.players.team2).length > 0;
+         
+          if (hasTeam1Players || hasTeam2Players) {
+              // Add "Current Set" heading
+              statsHtml += '<div class="previous-set-section">';
+              statsHtml += '<h4>Current Set</h4>';
+          }
+
+
+
+
+
+
+
+
+          // Team 1 players
+          if (hasTeam1Players) {
+              statsHtml += '<h3>' + team1Label + ' Player Statistics</h3>';
+              statsHtml += '<table class="player-stats-table">';
+              statsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+              statsHtml += '<tbody>';
+            
+              Object.keys(gameState.players.team1).forEach(function(playerName) {
+                  const player = gameState.players.team1[playerName];
+                  statsHtml += '<tr>';
+                  statsHtml += '<td class="player-name">' + playerName + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                  statsHtml += '</tr>';
+              });
+            
+              statsHtml += '</tbody></table>';
+          }
+
+
+
+
+
+
+
+
+          // Team 2 players
+          if (hasTeam2Players) {
+              statsHtml += '<h3>' + team2Label + ' Player Statistics</h3>';
+              statsHtml += '<table class="player-stats-table">';
+              statsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+              statsHtml += '<tbody>';
+            
+              Object.keys(gameState.players.team2).forEach(function(playerName) {
+                  const player = gameState.players.team2[playerName];
+                  statsHtml += '<tr>';
+                  statsHtml += '<td class="player-name">' + playerName + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                  statsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                  statsHtml += '</tr>';
+              });
+            
+              statsHtml += '</tbody></table>';
+          }
+         
+          // Close the current set section if we opened it
+          if (hasTeam1Players || hasTeam2Players) {
+              statsHtml += '</div>';
+          }
+
+
+
+
+
+
+
+
+          if (statsHtml === '') {
+              statsHtml = '<p>No player statistics available yet.</p>';
+          }
+
+
+
+
+
+
+
+
+          statsContainer.innerHTML = statsHtml;
+      }
+
+
+
+
+
+
+
+
+      function updatePreviousSetsStats() {
+          const previousSetsContainer = document.getElementById('previous-sets-display');
+          if (!previousSetsContainer) return;
+
+
+
+
+
+
+
+
+          // Check if there are previous sets
+          if (!gameState.setHistory || gameState.setHistory.length === 0) {
+              previousSetsContainer.innerHTML = '';
+              previousSetsContainer.classList.add('hidden');
+              return;
+          }
+
+
+
+
+
+
+
+
+          previousSetsContainer.classList.remove('hidden');
+          const team1Label = gameState.teams.team1.id || 'Team 1';
+          const team2Label = gameState.teams.team2.id || 'Team 2';
+
+
+
+
+
+
+
+
+          let previousSetsHtml = '';
+
+
+
+
+
+
+
+
+          // Loop through each previous set
+          gameState.setHistory.forEach(function(setData) {
+              previousSetsHtml += '<div class="previous-set-section">';
+              previousSetsHtml += '<h4>Set ' + setData.setNumber + ' - Final Score: ' + setData.team1Score + ' - ' + setData.team2Score + '</h4>';
+             
+              // Team 1 players from this set
+              if (setData.team1Players && Object.keys(setData.team1Players).length > 0) {
+                  previousSetsHtml += '<h4>' + team1Label + ' Player Statistics</h4>';
+                  previousSetsHtml += '<table class="player-stats-table">';
+                  previousSetsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+                  previousSetsHtml += '<tbody>';
+                
+                  Object.keys(setData.team1Players).forEach(function(playerName) {
+                      const player = setData.team1Players[playerName];
+                      previousSetsHtml += '<tr>';
+                      previousSetsHtml += '<td class="player-name">' + playerName + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                      previousSetsHtml += '</tr>';
+                  });
+                
+                  previousSetsHtml += '</tbody></table>';
+              }
+             
+              // Team 2 players from this set
+              if (setData.team2Players && Object.keys(setData.team2Players).length > 0) {
+                  previousSetsHtml += '<h4>' + team2Label + ' Player Statistics</h4>';
+                  previousSetsHtml += '<table class="player-stats-table">';
+                  previousSetsHtml += '<thead><tr><th>Player/Number</th><th>Serves</th><th>Aces</th><th>Blocks</th><th>Spikes</th><th>Points</th></tr></thead>';
+                  previousSetsHtml += '<tbody>';
+                
+                  Object.keys(setData.team2Players).forEach(function(playerName) {
+                      const player = setData.team2Players[playerName];
+                      previousSetsHtml += '<tr>';
+                      previousSetsHtml += '<td class="player-name">' + playerName + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.serves || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.aces || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.blocks || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.spikes || 0) + '</td>';
+                      previousSetsHtml += '<td class="player-stat-value">' + (player.points || 0) + '</td>';
+                      previousSetsHtml += '</tr>';
+                  });
+                
+                  previousSetsHtml += '</tbody></table>';
+              }
+             
+              previousSetsHtml += '</div>';
+          });
+
+
+
+
+
+
+
+
+          previousSetsContainer.innerHTML = previousSetsHtml;
+      }
+
+
+
+
+
+
+
+
+      function subscribeToGame() {
+          console.log('Connecting to Firebase Realtime Database...');
+
+
+
+
+
+
+
+
+          // Monitor connection status
+          const connectedRef = ref(realtimeDB, '.info/connected');
+          onValue(connectedRef, (snapshot) => {
+              if (snapshot.val() === true) {
+                  console.log('✓ Connected to Firebase');
+                  document.getElementById('connection-status').textContent = 'Connected to server';
+              } else {
+                  console.log('✗ Disconnected from Firebase');
+                  document.getElementById('connection-status').textContent = 'Disconnected - reconnecting...';
+                  updateLiveIndicator('disconnected');
+              }
+          });
+
+
+
+
+
+
+
+
+          // Listen for game updates
+          onValue(realtimeGameRef, (snapshot) => {
+              console.log('Received game update');
+
+
+
+
+
+
+
+
+              if (!snapshot.exists()) {
+                  console.log('No game data found');
+                  gameState = null;
+                  updateDisplay();
+                  return;
+              }
+
+
+
+
+
+
+
+
+              gameState = snapshot.val();
+              console.log('Game state updated:', gameState);
+              updateDisplay();
+          }, (error) => {
+              console.error('Error connecting to database:', error);
+              updateLiveIndicator('disconnected');
+          });
+
+
+          // Listen for previous match snapshot updates
+          onValue(realtimePreviousGameRef, (snapshot) => {
+              if (snapshot.exists()) {
+                  previousGameState = snapshot.val();
+                  renderPreviousGame(previousGameState);
+              } else {
+                  previousGameState = null;
+                  renderPreviousGame(null);
+              }
+          }, (error) => {
+              console.error('Error loading previous match:', error);
+          });
+      }
+
+
+
+
+
+
+
+
+      // message hha nga
+      document.addEventListener('DOMContentLoaded', function() {
+          console.log('Viewer page loaded');
+          subscribeToGame();
+      });
+  </script>
 </head>
 <body>
-   <div class="container">
-       <div class="viewer-header">
-           <div id="live-indicator" class="live-indicator no-game">CONNECTING...SOON</div>
-           <h1>Shine-Ue Volleyball tournament live game stats</h1>
-           <div id="connection-status" class="connection-status">Connecting to server... please wait</div>
-       </div>
-
-       <div id="waiting-panel" class="card">
-           <div class="waiting-message">
-               <h2>Waiting for Game</h2>
-               <p>No active game at the moment.</p>
-               <p>The score will appear here automatically when a match starts.</p>
-           </div>
-       </div>
+  <div class="container">
+      <div class="viewer-header">
+          <div id="live-indicator" class="live-indicator no-game">CONNECTING...SOON</div>
+          <h1>Shine-Ue Volleyball tournament live game stats</h1>
+          <div id="connection-status" class="connection-status">Connecting to server... please wait</div>
+      </div>
 
 
-       <!-- Game panel - shown when game is active -->
-       <div id="game-panel" class="hidden">
-           <div class="card">
-               <div class="score-display">
-                   <div class="team-score">
-                       <div class="team-label" id="display-team1">Team 1</div>
-                       <div class="score" id="score1">0</div>
-                   </div>
-                   <div class="period-info">
-                       <div id="period-display">Set 1</div>
-                   </div>
-                   <div class="team-score">
-                       <div class="team-label" id="display-team2">Team 2</div>
-                       <div class="score" id="score2">0</div>
-                   </div>
-               </div>
+          <div class="card" id="previous-game-panel">
+              <div id="previous-game-display"><p>Loading previous match...</p></div>
+          </div>
 
 
-               <div class="set-info">
-                   <h3>Match Progress</h3>
-                   <div class="sets-won" id="sets-won">0 - 0</div>
-               </div>
-           </div>
 
 
-           <div class="card">
-               <h2>Player Statistics</h2>
-               <div class="player-stats-container" id="player-stats-display">
-                   <p>No player statistics available yet.</p>
-               </div>
-               <div class="previous-sets-container hidden" id="previous-sets-display">
-                   <h3>Previous Sets Statistics</h3>
-               </div>
-           </div>
-       </div>
-   </div>
+      <div id="waiting-panel" class="card">
+          <div class="waiting-message">
+              <h2>Waiting for Game</h2>
+              <p>No active game at the moment.</p>
+              <p>The score will appear here automatically when a match starts.</p>
+          </div>
+      </div>
+
+
+
+
+
+
+
+
+      <!-- Game panel - shown when game is active -->
+      <div id="game-panel" class="hidden">
+          <div class="card">
+              <div class="score-display">
+                  <div class="team-score">
+                      <div class="team-label" id="display-team1">Team 1</div>
+                      <div class="score" id="score1">0</div>
+                  </div>
+                  <div class="period-info">
+                      <div id="period-display">Set 1</div>
+                  </div>
+                  <div class="team-score">
+                      <div class="team-label" id="display-team2">Team 2</div>
+                      <div class="score" id="score2">0</div>
+                  </div>
+              </div>
+
+
+
+
+
+
+
+
+              <div class="set-info">
+                  <h3>Match Progress</h3>
+                  <div class="sets-won" id="sets-won">0 - 0</div>
+              </div>
+          </div>
+
+
+
+
+
+
+
+
+          <div class="card">
+              <h2>Player Statistics</h2>
+              <div class="player-stats-container" id="player-stats-display">
+                  <p>No player statistics available yet.</p>
+              </div>
+              <div class="previous-sets-container hidden" id="previous-sets-display">
+                  <h3>Previous Sets Statistics</h3>
+              </div>
+          </div>
+      </div>
+  </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
